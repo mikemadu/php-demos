@@ -74,6 +74,7 @@ names different from POST variables*/
           if( isset($_POST['studentName'])){
               /*Create new variables to hold the form submissions. In a production app make sure inputs are 
               sanitized to prevent SQL-injection attacks. Especially public-facing pages*/
+              print_r($_POST['studentName']);
              $class = $_POST["class"];
              $term = $_POST["term"];
              $subject = $_POST["subject"];
