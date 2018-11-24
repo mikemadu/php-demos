@@ -1,8 +1,10 @@
 <?php  include('dbpike.php');
         
-    /* Assuming that at page load we are accepting some query strings and using them to query 'tbl_finalresult'
+    /* BEGINNING OF QUERY STRING REQUESTS
+    Assuming that at page load we are accepting some query strings and using them to query 'tbl_finalresult'
     */                            
     if (isset($_GET['term']) && isset($_GET['sessionName']) && isset($_GET['subjectName'])) {
+    //Get the query strings into variables
     $term = $_GET['term'];
     $sessionName = $_GET['sessionName'];
     $subjectName = $_GET['subjectName'];
@@ -20,10 +22,9 @@
          </tr>
         </thead>
         <tbody>
-
     <?php
     $sql = "SELECT * FROM tbl_finalresult 
-    WHERE term = '$term' && sessionName = '$sessionName' && subject = '$subjectName'";
+    WHERE term = '$term' AND sessionName = '$sessionName' AND subject = '$subjectName'";
        $result = $con->query($sql);                                     
            if($result->num_rows > 0) {
                while($row = $result->fetch_assoc()) {?>
@@ -36,16 +37,19 @@
               <td> <input  type="text" name="exam" placeholder="Exam"></td>
             </tr>
             <?php
-            }
+            } ?>
+            <tr><td colspan='5'></td>
+            <td><input type ='submit' value='Save'/></td>
+            </tr><?php
         }else{ //no data found ?>
-                    <tr><td colspan='6'>NO DATA FOUND</td>
+                    <tr><td colspan='6'>NO DATA FOUND</td></tr>
         </tbody>
      </table>
      </form>
-<?php  } //else
+<?php  } //end of  ---->no data 
 
-} // ---> if(isset($_GET['term'])) ...etc
-else{ /*  */  
+} // End of ----> if(isset($_GET['term'])) ...etc
+else{ /*BEGINNING OF FORM SUBMISSION */  
 
 } 
 
