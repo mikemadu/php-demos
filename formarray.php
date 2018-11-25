@@ -4,7 +4,7 @@
     Assuming that at page load we are accepting some query strings and using them to query 'tbl_finalresult'
     */                            
     if (isset($_GET['term']) && isset($_GET['sessionName']) && isset($_GET['subjectName'])) {
-    //Get the query strings into variables
+    //Get the query strings into variables. These will be used as search criteria
     $term = $_GET['term'];
     $sessionName = $_GET['sessionName'];
     $subjectName = $_GET['subjectName'];
@@ -22,41 +22,90 @@
          </tr>
         </thead>
         <tbody>
-    <?php
+<?php
     $sql = "SELECT * FROM tbl_finalresult 
-    WHERE term = '$term' AND sessionName = '$sessionName' AND subject = '$subjectName'";
+    WHERE term = '$term' AND session = '$sessionName' AND subject = '$subjectName'";
        $result = $con->query($sql);                                     
            if($result->num_rows > 0) {
-               while($row = $result->fetch_assoc()) {?>
+               while($row = $result->fetch_assoc()) {
+?>
             <tr>
-              <td> <input  type="hidden" name="id" readonly value="<? $row['fresult_id'] ?>" ></td>
-              <td><input type="text" name="class" readonly value="<? $row['class'] ?>" ></td>
-              <td> <input  type="text" name="name" readonly value="<? $row['name'] ?>"></td>
-              <td> <input  type="text" name="subjectName" readonly value="<? $row['subject']?>"></td>
-              <td> <input  type="text" name="assess" placeholder="Assessment"></td>
-              <td> <input  type="text" name="exam" placeholder="Exam"></td>
+            <!-- While writing out the HTML form, we make an array called 'resultList' for each row read from the database -->
+              <td> <input  type="hidden" name = "resultList[<?php echo $row['fresult_id']; ?>][fresult_id]" readonly value="<?php echo $row['fresult_id']; ?>" ></td>
+              <td> <input type="text" name = "resultList[<?php echo $row['fresult_id']; ?>][class]" readonly value="<?php echo  $row['class']; ?>" ></td>
+              <td> <input  type="text" name = "resultList[<?php echo $row['fresult_id']; ?>][name]" readonly value="<?php echo  $row['studentName']; ?>"></td>
+              <td> <input  type="text" name = "resultList[<?php echo $row['fresult_id']; ?>][subjectName]" readonly value="<?php echo  $row['subject'];?>"></td>
+              <td> <input  type="text" name = "resultList[<?php echo $row['fresult_id']; ?>][assess]" placeholder="Assessment" value='18'></td>
+              <td> <input  type="text" name = "resultList[<?php echo $row['fresult_id']; ?>][exam]" placeholder="Exam"  value='70'></td>
             </tr>
-            <?php
-            } ?>
+<?php
+            } //End: while .... 
+?>
             <tr><td colspan='5'></td>
-            <td><input type ='submit' value='Save'/></td>
-            </tr><?php
-        }else{ //no data found ?>
-                    <tr><td colspan='6'>NO DATA FOUND</td></tr>
+            <td><input type ='submit' value='UPDATE MARKS'/></td>
+            </tr>
+            </tbody>
+     </table>
+     </form>
+<?php
+        } //End: if($result->num_rows) ...etc
+        else //no data found from the SQL query above
+        { 
+?>
+          <tr><td colspan='6'>NO DATA FOUND</td></tr>
         </tbody>
      </table>
      </form>
-<?php  } //end of  ---->no data 
+<?php  } //End: no data found
 
-} // End of ----> if(isset($_GET['term'])) ...etc
-else{ /*BEGINNING OF FORM SUBMISSION */  
+} // End:  if(isset($_GET['term'])) ...etc
 
-} 
+else{ /*BEGINNING OF FORM SUBMISSION ============================================================================================
+    We are posting back to this page for processing.
+     If we are posting to another page instead of this one, we will have the code starting from this place onwards in that form*/  
+if(is_array($_POST) ){
+    $id=$assessment=$exam_result="";
+    $listOfStudents;
+    //get the submitted array
+    $listOfStudents = $_POST['resultList'];
+    $successMessage="";
+    //loop thru each ...
+    foreach ($listOfStudents as $oneStudent) {
+        $id = $oneStudent['fresult_id'];
+        $assessment = $oneStudent['assess'];
+       $assessment =  floatval($assessment);//make sure it is a number coming in. Evaluate to floating point number
+        $exam_result = $oneStudent['exam'];
+       
+        $exam_result = floatval($exam_result);//make sure it is a number coming in
+
+        //Notice that we don't even need to read the 'name', 'class', 'subjectName' fields since we are not updating them.
+        if($assessment != 0 && $exam_result != 0){//only do updates if $assessment and $exam_result contain valid inputs
+            $total = $assessment + $exam_result;
+            
+            $grade = computeGrade($assessment, $exam_result);//Using the function below, we get the grade
+            $remark = computeRemark($total, $grade); //Using the function below , get the remark
+            //Prepare a SQL statement for updating the database 
+            $sql ="UPDATE tbl_finalresult SET total = $total, assess = $assessment, exam = $exam_result, grade = '$grade',remark = '$remark' 
+            WHERE fresult_id = $id";
+            $result = $con->query($sql);
+            if($result){
+                $successMessage = $successMessage . $oneStudent['name'] . " successfully updated <br>";
+           }
+        }//End: if($assessment ....)   
+
+    }//End: foreach
+    echo $successMessage;
+    //TO DO: we can put code for returning the updated list here ...
+
+}//End: if(isset())
+
+}//End: form submission 
 
 /*
 The functions below will help keep our code cleaner
 //==================================================
 */
+    //This function takes in a total and grade to return a remark
     function computeRemark($total, $grade){
             //check for remarks   
         if ($total >=100 || $grade >= 90){ 
@@ -74,6 +123,7 @@ The functions below will help keep our code cleaner
     }
 
     //==============================================
+    //This function takes two parameters, assess and exam to return grade
     function computeGrade($assess, $exam){
         if(is_numeric($assess) && is_numeric($exam)){
                 if ($assess + $exam >=95 && $assess + $exam <=100){
@@ -110,3 +160,5 @@ The functions below will help keep our code cleaner
     }    
 
 ?>
+<!-- Below is a link to supply query strings to this page for initial population of the text boxes-->
+        <a href='http://localhost:8080/multiselect/formarray.php?term=Second&subjectName=Biology&sessionName=First'>Test Link</a>
