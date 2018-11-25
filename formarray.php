@@ -34,7 +34,8 @@
                while($row = $result->fetch_assoc()) {
 ?>
             <tr>
-            <!-- While writing out the HTML form, we make an array called 'resultList' for each row read from the database -->
+            <!-- While writing out the HTML form, we make an array called 'resultList' for each row read from the database
+                    We use the Primary Key 'fresult_id' as an index or key in the array -->
               <td> <input  type="hidden" name = "resultList[<?php echo $row['fresult_id']?>][fresult_id]" readonly value="<?php echo $row['fresult_id'] ?>" ></td>
               <td> <input type="text" name = "resultList[<?php echo $row['fresult_id'] ?>][class]" readonly value="<?php echo  $row['class'] ?>" ></td>
               <td> <input  type="text" name = "resultList[<?php echo $row['fresult_id'] ?>][name]" readonly value="<?php echo  $row['studentName'] ?>"></td>
