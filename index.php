@@ -101,7 +101,8 @@ names different from POST variables*/
             <button type="submit" name="submit" class="btn btn-primary">Save Students</button>
         </div>
         <!-- Below is a link to supply query strings to this page for initial population of the text boxes-->
-        <a href='http://localhost:8080/multiselect/index.php?q_class=Pearl&q_subject=Biology&q_term=Second&q_session=First'>Test Link</a>
+        <a href='http://localhost:8080/multiselect/index.php?q_class=Pearl&q_subject=Biology&q_term=Second&q_session=First'>Test Link</a><br><br>
+        <a href='http://localhost:8080/multiselect/dateofbirth.php'>Date of Birth Filter</a>
          </form>
     </div>
    

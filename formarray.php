@@ -40,8 +40,8 @@
               <td> <input type="text" name = "resultList[<?php echo $row['fresult_id'] ?>][class]" readonly value="<?php echo  $row['class'] ?>" ></td>
               <td> <input  type="text" name = "resultList[<?php echo $row['fresult_id'] ?>][name]" readonly value="<?php echo  $row['studentName'] ?>"></td>
               <td> <input  type="text" name = "resultList[<?php echo $row['fresult_id'] ?>][subjectName]" readonly value="<?php echo  $row['subject']?>"></td>
-              <td> <input  type="text" name = "resultList[<?php echo $row['fresult_id'] ?>][assess]" placeholder="Assessment"  value="<?php echo  $row['assess']?>"></td>
-              <td> <input  type="text" name = "resultList[<?php echo $row['fresult_id'] ?>][exam]" placeholder="Exam" value="<?php echo  $row['exam']?>" ></td>
+              <td> <input  type="text" name = "resultList[<?php echo $row['fresult_id'] ?>][assess]" placeholder="Assessment"  ></td>
+              <td> <input  type="text" name = "resultList[<?php echo $row['fresult_id'] ?>][exam]" placeholder="Exam"  ></td>
             </tr>
 <?php
             } //End: while .... 
