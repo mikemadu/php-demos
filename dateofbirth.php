@@ -83,7 +83,7 @@
                                   if($dob != NULL){//check for NULL
                                     $date = date_create($dob); //convert from MySQL date format to PHP date  
                                      //so we can display it in a nice formated way in the next statement.
-                                       echo  $name ."  ---- </i>" .  date_format($date, 'd M, Y') . "<br>";
+                                       echo  $name ."  ---- " .  date_format($date, 'd M, Y') . "<br>";
                                   }
                                
                             } 
@@ -112,7 +112,7 @@
                             if($dob != NULL){//check for NULL
                                     $date = date_create($dob); //convert from MySQL date format to PHP date 
                                     //so we can display it in a nice formated way in the next statement.
-                                       echo  $name ."  ---- </i>" .  date_format($date, 'd M, Y') . "<br>";
+                                       echo  $name ."  ---- " .  date_format($date, 'd M, Y') . "<br>";
                                   }
                                 }
            }
