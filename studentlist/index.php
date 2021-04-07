@@ -51,7 +51,7 @@ while ($row = $desired_result->fetch_assoc()) {
 }
 /* By now the $result_array has all our students. Next we use the unique iDs to loop over
 the results array and produce our final HTML that will be displayed*/
-foreach ($iDs as $oneID) {
+foreach ($iDs as $oneID) { // Outer loop starts here
     ?>
 
 <div class="col-md-12 mt-2" style='margin-bottom:40px;'>
@@ -97,9 +97,9 @@ foreach ($iDs as $oneID) {
 
          <?php
 //We loop over the result array and display only the records that the IDs match the ID ($oneID) in the main outer loop
-    foreach ($result_array as $val) {
+    foreach ($result_array as $val) { //Inner loop starts here
         // $val is each row in the result array
-        if ($val['user_id'] == $oneID) { //compare the iD
+        if ($val['user_id'] == $oneID) { //compare the iD here
             $rank = $val["subjectRank"];
             ?>
      <tbody>
