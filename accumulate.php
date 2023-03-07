@@ -49,7 +49,7 @@ if ($result->num_rows < 1) {
    echo("Record updated");
    }
     if ($db->errno) {
-        //there was an error inserting, so announce it
+        //there was an error updating, so announce it
         echo ('Error updating data');
     }
     $db->close(); //close the connection
